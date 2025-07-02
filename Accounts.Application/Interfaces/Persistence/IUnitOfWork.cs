@@ -8,6 +8,7 @@ public interface IUnitOfWork
     IRoleRepository Roles { get; }
     IPermissionRepository Permissions { get; }
     IRefreshTokenRepository RefreshTokens { get; }
+    IRolePermissionRepository RolePermissions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

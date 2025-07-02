@@ -1,5 +1,4 @@
-﻿using Accounts.Application.Interfaces.Persistence;
-using Accounts.Application.Interfaces.Persistence.Repositories;
+﻿using Accounts.Application.Interfaces.Persistence.Repositories;
 using Accounts.Domain.Users;
 
 namespace Accounts.Infrastructure.Persistence.Repositories;

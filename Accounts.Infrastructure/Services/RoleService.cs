@@ -74,11 +74,36 @@ public class RoleService(IUnitOfWork unitOfWork, IRoleQueries roleQueries, ILogg
         logger.LogInformation("Role deleted successfully: {Id}", id);
     }
 
-    public Task AssignPermissionsAsync(Guid roleId, List<Guid> permissionIds, CancellationToken cancellationToken = default)
+    public async Task AssignPermissionsAsync(Guid roleId, List<Guid> permissionIds, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
+        logger.LogInformation("Assigning permissions to role: {RoleId}", roleId);
 
+        var roleDto = await roleQueries.GetByIdAsync(roleId, cancellationToken);
+        if (roleDto is null)
+        {
+            logger.LogWarning("Role not found: {RoleId}", roleId);
+            throw new Exception("Role not found");
+        }
+
+        mapper.Map<Role>(roleDto);
+
+        if (permissionIds == null || !permissionIds.Any())
+        {
+            logger.LogWarning("No permissions provided for role: {RoleId}", roleId);
+            throw new Exception("No permissions provided");
+        }
+
+        foreach (var permissionId in permissionIds)
+        {
+            var permission = new RolePermission(roleId, permissionId);  
+            await unitOfWork.RolePermissions.AddAsync(permission, cancellationToken);
+        }
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("Permissions assigned successfully to role: {RoleId}", roleId);
+    }
+    
     Task<RoleDto?> IRoleService.GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => roleQueries.GetByIdAsync(id, cancellationToken);
 }

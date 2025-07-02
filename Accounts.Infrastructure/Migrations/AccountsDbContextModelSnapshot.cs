@@ -161,15 +161,15 @@ namespace Accounts.Infrastructure.Migrations
                         .HasColumnName("updatedat");
 
                     b.HasKey("Id")
-                        .HasName("pk_rolepermission");
+                        .HasName("pk_rolepermissions");
 
                     b.HasIndex("PermissionId")
-                        .HasDatabaseName("ix_rolepermission_permissionid");
+                        .HasDatabaseName("ix_rolepermissions_permissionid");
 
                     b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_rolepermission_roleid");
+                        .HasDatabaseName("ix_rolepermissions_roleid");
 
-                    b.ToTable("rolepermission", (string)null);
+                    b.ToTable("rolepermissions", (string)null);
                 });
 
             modelBuilder.Entity("Accounts.Domain.Users.User", b =>
@@ -193,6 +193,10 @@ namespace Accounts.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("fullname");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("isemailconfirmed");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -299,14 +303,14 @@ namespace Accounts.Infrastructure.Migrations
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_rolepermission_permissions_permissionid");
+                        .HasConstraintName("fk_rolepermissions_permissions_permissionid");
 
                     b.HasOne("Accounts.Domain.Users.Role", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_rolepermission_roles_roleid");
+                        .HasConstraintName("fk_rolepermissions_roles_roleid");
 
                     b.Navigation("Permission");
 

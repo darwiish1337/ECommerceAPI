@@ -71,6 +71,7 @@ public static class DependencyInjection
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserVerificationRepository, UserVerificationRepository>();
+        services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
         // Unit of a Work pattern (aggregates all repositories)
         services.AddScoped<IUnitOfWork, UnitOfWork>();
